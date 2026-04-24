@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Secret Chess Chat</title>
+<style>
+  body { font-family: Arial; text-align: center; background:#111; color:#fff; }
+  table { margin: 20px auto; border-collapse: collapse; }
+  td {
+    width: 50px; height: 50px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .w { background: #eee; color:#000; }
+  .b { background: #444; }
+  #msg { margin-top: 20px; font-size: 20px; }
+</style>
+</head>
+<body>
+
+<h2>♟️ Secret Chess Message</h2>
+
+<table id="board"></table>
+
+<div id="msg">Message: </div>
+
+<script>
+const board = document.getElementById("board");
+let first = null;
+let message = "";
+
+// تحويل بسيط من مربعات إلى حروف
+const map = {
+  "0,0":"A","0,1":"B","0,2":"C","0,3":"D","0,4":"E","0,5":"F","0,6":"G","0,7":"H",
+  "1,0":"I","1,1":"J","1,2":"K","1,3":"L","1,4":"M","1,5":"N","1,6":"O","1,7":"P",
+};
+
+for(let r=0;r<8;r++){
+  let row = document.createElement("tr");
+
+  for(let c=0;c<8;c++){
+    let cell = document.createElement("td");
+    cell.className = (r+c)%2==0 ? "w":"b";
+    cell.dataset.pos = r+","+c;
+
+    cell.onclick = () => {
+      if(!first){
+        first = cell.dataset.pos;
+      } else {
+        let letter = map[first] || "?";
+        message += letter;
+        document.getElementById("msg").innerText = "Message: " + message;
+        first = null;
+      }
+    };
+
+    row.appendChild(cell);
+  }
+
+  board.appendChild(row);
+}
+</script>
+
+</body>
+</html>
